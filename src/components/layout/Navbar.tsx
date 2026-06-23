@@ -1,34 +1,80 @@
 "use client";
 
+
 import Link from "next/link";
-import { Menu, X, Plus, User, Search } from "lucide-react";
-import { useEffect, useState } from "react";
 
-import { usePathname } from "next/navigation";
+import {
 
-export default function Navbar() {
+    Plus,
+    User,
+    Search
+
+} from "lucide-react";
 
 
-    const [showSearch, setShowSearch] = useState(false);
-    const [menuOpen, setMenuOpen] = useState(false);
-    const [isScrolled, setIsScrolled] = useState(false);
-    const [isReady, setIsReady] = useState(false);
+import {
+
+    useEffect,
+    useState
+
+} from "react";
+
+
+import {
+
+    usePathname
+
+} from "next/navigation";
+
+
+import MobileNavbar from "./MobileNavbar";
+
+
+
+
+
+
+
+
+export default function Navbar(){
+
+
+
+    const [showSearch,setShowSearch] = useState(false);
+
+    const [isScrolled,setIsScrolled] = useState(false);
+
+    const [isReady,setIsReady] = useState(false);
+
+    const [buyOpen,setBuyOpen] = useState(false);
+
+
+
     const pathname = usePathname();
+
+
     const hideSearch = pathname !== "/";
 
 
-    // Navbar background change
-
-    // Navbar background change
-
-    useEffect(() => {
 
 
-        const handleScroll = () => {
+
+
+
+
+
+    // SCROLL COLOR CHANGE
+
+    useEffect(()=>{
+
+
+        const handleScroll = ()=>{
 
 
             setIsScrolled(
+
                 window.scrollY > 20
+
             );
 
 
@@ -40,22 +86,19 @@ export default function Navbar() {
 
 
 
-
         window.addEventListener(
 
             "scroll",
 
             handleScroll,
 
-            { passive: true }
+            {passive:true}
 
         );
 
 
 
-
-        return () => {
-
+        return()=>{
 
             window.removeEventListener(
 
@@ -65,13 +108,10 @@ export default function Navbar() {
 
             );
 
-
         };
 
 
-
-    }, []);
-
+    },[]);
 
 
 
@@ -80,49 +120,42 @@ export default function Navbar() {
 
 
 
-    // Hero search visibility observer
-
-
-    useEffect(() => {
-
-
-        let observer: IntersectionObserver | null = null;
-
-
-        let checkSearchPosition: (() => void) | null = null;
 
 
 
 
+    // HERO SEARCH OBSERVER SAME OLD LOGIC
 
 
-        // IF NOT HOME PAGE RESET SEARCH
+    useEffect(()=>{
 
 
-        if (pathname !== "/") {
+
+        let observer:IntersectionObserver|null = null;
+
+        let checkSearchPosition:(()=>void)|null = null;
+
+
+
+
+        if(pathname !== "/"){
 
 
             setShowSearch(false);
 
-
             return;
-
 
         }
 
 
 
 
-
-
-
-
-
-        const timer = setTimeout(() => {
+        const timer = setTimeout(()=>{
 
 
 
             const heroSearch =
+
                 document.getElementById(
 
                     "hero-search"
@@ -132,34 +165,24 @@ export default function Navbar() {
 
 
 
-
-
-            if (!heroSearch) {
+            if(!heroSearch){
 
 
                 setShowSearch(false);
 
-
                 return;
-
 
             }
 
 
 
 
-
-
-
-
-
-            checkSearchPosition = () => {
-
+            checkSearchPosition = ()=>{
 
 
                 const rect =
-                    heroSearch.getBoundingClientRect();
 
+                    heroSearch.getBoundingClientRect();
 
 
 
@@ -170,12 +193,7 @@ export default function Navbar() {
                 );
 
 
-
             };
-
-
-
-
 
 
 
@@ -186,65 +204,39 @@ export default function Navbar() {
 
 
 
-
-
-
-
-            setTimeout(() => {
+            setTimeout(()=>{
 
 
                 setIsReady(true);
 
 
-            }, 50);
+            },50);
 
 
 
 
 
+            observer = new IntersectionObserver(
 
 
+                ()=>{
+
+                    checkSearchPosition?.();
+
+                },
 
 
+                {
 
-            observer =
-                new IntersectionObserver(
+                    threshold:[0,0.7,1]
 
-
-                    () => {
-
-
-                        checkSearchPosition?.();
-
-
-                    },
-
-
-                    {
-
-                        threshold: [0, 0.7, 1]
-
-                    }
-
-
-                );
-
-
-
-
-
-
-
-
-            observer.observe(
-
-                heroSearch
+                }
 
             );
 
 
 
-
+            observer.observe(heroSearch);
 
 
 
@@ -255,49 +247,30 @@ export default function Navbar() {
 
                 checkSearchPosition,
 
-                { passive: true }
+                {passive:true}
 
             );
 
 
 
 
-
-        }, 100);
-
+        },100);
 
 
 
 
 
-
-
-
-        return () => {
-
+        return()=>{
 
 
             clearTimeout(timer);
 
 
+            observer?.disconnect();
 
 
 
-            if (observer) {
-
-
-                observer.disconnect();
-
-
-            }
-
-
-
-
-
-
-            if (checkSearchPosition) {
-
+            if(checkSearchPosition){
 
 
                 window.removeEventListener(
@@ -309,376 +282,588 @@ export default function Navbar() {
                 );
 
 
-
             }
-
 
 
         };
 
 
 
+    },[pathname]);
 
-    }, [pathname]);
 
 
-    return (
 
-        <>
 
-            {/* MAIN NAVBAR */}
-            <header
-                className={`fixed top-0 left-0 right-0 h-16 z-50 px-4 lg:px-12 flex items-center transition-colors duration-300
-                    ${isScrolled
-                        ?
-                        "bg-white shadow-sm"
-                        :
-                        "bg-transparent"
-                    }
-                `}
-            >
 
 
-                {/* SECTION 1 : LOGO */}
 
-                <div
-                    className={`overflow-hidden transition-all duration-500
-                        ${showSearch
-                            ?
-                            "w-0 xl:w-[10%]"
-                            :
-                            "w-[30%] md:w-[15%] xl:w-[10%]"
-                        }
-                    `}
-                >
 
-                    <Link
-                        href="/"
-                        className={`text-base md:text-xl font-bold whitespace-nowrap transition-colors duration-300 ${isScrolled
-                            ?
-                            "text-black"
-                            :
-                            "text-white"
-                            }`}
-                    >
 
-                        DreamHome
 
-                    </Link>
 
-                </div>
 
+return(
 
-                {/* SECTION 2 : SEARCH */}
+<>
 
 
 
-                <div
-                    className={`flex justify-center transition-all duration-500 ${showSearch
-                        ?
-                        "w-[70%] md:w-[55%] xl:w-[30%]"
-                        :
-                        "w-[40%] md:w-[40%] xl:w-[30%]"
-                        }`}
-                >
+{/* DESKTOP NAVBAR */}
 
-                    {
+<header
 
-                        !hideSearch && (
+className={`
+hidden xl:flex
+fixed top-0 left-0 right-0
+h-16
+z-50
 
-                            <div
-                                className={`flex items-center border border-gray-300 rounded-full px-4 py-2 w-full max-w-105 focus-within:border-blue-600 transition-colors duration-300
-                            ${isReady ? "transition-opacity duration-500 ease-in-out" : ""}
-                            ${showSearch
-                                        ?
-                                        "opacity-100"
-                                        :
-                                        "opacity-0 pointer-events-none"
-                                    }
-                        `}
-                            >
+px-12
 
-                                <input
-                                    placeholder="Search Location"
-                                    className="flex-1 outline-none text-sm"
-                                />
+items-center
 
+transition-colors duration-300
 
-                                <button className="text-blue-600">
 
-                                    <Search size={20} />
+${
 
-                                </button>
+isScrolled
 
+?
 
-                            </div>
+"bg-white shadow-sm"
 
+:
 
-                        )
+"bg-transparent"
 
-                    }
+}
 
+`}
 
-                </div>
+>
 
-                {/* SECTION 3 : NAVIGATION */}
 
-                <div className="hidden xl:flex xl:w-[35%] items-center justify-around">
 
 
-                    <Link
-                        href="/"
-                        className={`font-medium hover:[text-shadow:0_0_0.8px_currentColor] transition-all duration-300
-                            ${isScrolled
-                                ?
-                                "text-black"
-                                :
-                                "text-white"
-                            }
-                        `}
-                    >
 
 
-                        Home
 
+{/* LOGO */}
 
-                    </Link>
+<div
 
+className={`
+overflow-hidden
+transition-all duration-500
 
-                    <Link
-                        href="/properties"
-                        className={`font-medium hover:[text-shadow:0_0_0.8px_currentColor] transition-all duration-300
-                            ${isScrolled
-                                ?
-                                "text-black"
-                                :
-                                "text-white"
-                            }
-                        `}
-                    >
 
-                        Buy/Rent
+${
 
-                    </Link>
+showSearch
 
+?
 
-                    <Link
-                        href="/contact"
-                        className={`font-medium hover:[text-shadow:0_0_0.8px_currentColor] transition-all duration-300
-                            ${isScrolled
-                                ?
-                                "text-black"
-                                :
-                                "text-white"
-                            }
-                        `}
-                    >
+"xl:w-[10%]"
 
-                        Contact Us
+:
 
-                    </Link>
+"xl:w-[10%]"
 
+}
 
-                    <Link
-                        href="/dashboard"
-                        className={`font-medium hover:[text-shadow:0_0_0.8px_currentColor] transition-all duration-300
-                            ${isScrolled
-                                ?
-                                "text-black"
-                                :
-                                "text-white"
-                            }
-                        `}
-                    >
+`}
 
-                        Dashboard
+>
 
-                    </Link>
 
+<Link
 
-                </div>
+href="/"
 
+className={`
 
+text-xl
+font-bold
 
+${
 
-                {/* SECTION 4 : ACTIONS */}
+isScrolled
 
-                <div className="w-[30%] md:w-[45%] xl:w-[25%] flex items-center justify-around">
+?
 
+"text-black"
 
-                    <Link
-                        href="/add-property"
-                        className={`w-9 h-9 md:w-auto md:h-auto md:px-5 md:py-2 rounded-full flex items-center justify-center font-medium border transition-all duration-300
-                            ${isScrolled
-                                ?
-                                "border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white"
-                                :
-                                "border-white text-white hover:bg-white hover:text-blue-600"
-                            }
-                        `}
-                    >
+:
 
+"text-white"
 
-                        <span className="hidden md:block">
+}
 
-                            Add Property
+`}
 
-                        </span>
+>
 
+DreamHome
 
-                        <Plus
-                            size={18}
-                            className="md:hidden"
-                        />
+</Link>
 
 
-                    </Link>
+</div>
 
 
 
-                    <Link
-                        href="/auth"
-                        className={`w-9 h-9 md:w-auto md:h-auto md:px-5 md:py-2 rounded-full flex items-center justify-center font-medium border transition-all duration-300 ${isScrolled
-                            ?
-                            "bg-blue-600 border-blue-600 text-white hover:bg-white hover:text-blue-600"
-                            :
-                            "bg-white border-white text-blue-600 hover:bg-transparent hover:text-white"
-                            }`}
-                    >
 
 
-                        <span className="hidden md:block">
 
-                            Login
 
-                        </span>
 
 
-                        <User
-                            size={18}
-                            className="md:hidden"
-                        />
+{/* SEARCH */}
 
+<div
 
-                    </Link>
+className={`
+flex justify-center
+transition-all duration-500
 
-                    <button
 
-                        onClick={() => setMenuOpen(!menuOpen)}
+${
 
-                        className={`
+showSearch
 
-        xl:hidden
+?
 
-        transition-colors
+"xl:w-[30%]"
 
-        duration-300
+:
 
-        cursor-pointer
+"xl:w-[30%]"
 
+}
 
-        ${isScrolled
+`}
 
-                                ?
+>
 
-                                "text-black"
 
-                                :
+{
 
-                                "text-white"
+!hideSearch &&
 
-                            }
 
-    `}
+<div
 
-                    >
+className={`
+flex items-center
 
+border
+border-gray-300
 
-                        {
+rounded-full
 
-                            menuOpen
+px-4 py-2
 
-                                ?
+w-full max-w-105
 
-                                <X size={28} />
 
-                                :
+${isReady && "transition-opacity duration-500"}
 
-                                <Menu size={28} />
 
-                        }
+${
 
+showSearch
 
-                    </button>
+?
 
+"opacity-100"
 
-                </div>
+:
 
+"opacity-0 pointer-events-none"
 
-            </header>
+}
 
-            {/* MOBILE MENU DROPDOWN */}
-            {menuOpen && (
 
-                <div className="fixed top-16 left-0 w-full bg-white shadow-lg z-40 xl:hidden">
+`}
 
+>
 
-                    <nav className="flex flex-col gap-1 p-6">
 
 
-                        <Link
-                            href="/"
-                            className="px-4 py-3 text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors font-medium rounded-lg"
-                            onClick={() => setMenuOpen(false)}
-                        >
+<input
 
-                            Home
+placeholder="Search Location"
 
-                        </Link>
+className="flex-1 outline-none text-sm"
 
+/>
 
 
-                        <Link
-                            href="/properties"
-                            className="px-4 py-3 text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors font-medium rounded-lg"
-                            onClick={() => setMenuOpen(false)}
-                        >
 
-                            Buy
+<Search
 
-                        </Link>
+size={20}
 
+className="text-blue-600"
 
+/>
 
-                        <Link
-                            href="/properties"
-                            className="px-4 py-3 text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors font-medium rounded-lg"
-                            onClick={() => setMenuOpen(false)}
-                        >
 
-                            Rent
 
-                        </Link>
+</div>
 
 
+}
 
-                        <Link
-                            href="/dashboard"
-                            className="px-4 py-3 text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors font-medium rounded-lg"
-                            onClick={() => setMenuOpen(false)}
-                        >
 
-                            Dashboard
 
-                        </Link>
+</div>
 
 
-                    </nav>
 
 
-                </div>
 
-            )}
-        </>
-    );
+
+
+
+
+
+{/* NAVIGATION */}
+
+<div
+
+className="xl:w-[35%] flex items-center justify-around"
+
+>
+
+
+
+<Link
+
+href="/"
+
+className={`${isScrolled?"text-black":"text-white"} font-medium`}
+
+>
+
+Home
+
+</Link>
+
+
+
+
+
+
+
+
+
+{/* BUY RENT MEGA MENU */}
+
+<div
+
+className="relative"
+
+onMouseEnter={()=>setBuyOpen(true)}
+
+onMouseLeave={()=>setBuyOpen(false)}
+
+>
+
+
+<button
+
+className={`${isScrolled?"text-black":"text-white"} font-medium`}
+
+>
+
+Buy/Rent
+
+</button>
+
+
+
+
+
+{
+
+buyOpen &&
+
+
+<div
+
+className="
+absolute
+
+top-10
+left-1/2
+-translate-x-1/2
+
+w-[520px]
+
+bg-white
+
+rounded-2xl
+
+shadow-xl
+
+p-6
+
+grid grid-cols-2
+
+text-black
+
+"
+
+>
+
+
+
+
+<div>
+
+
+<h3 className="font-bold mb-4">
+
+For Buyers
+
+</h3>
+
+
+<div className="space-y-3 text-sm flex flex-col">
+
+
+<Link href="/properties/buy">
+
+Buy A Home
+
+</Link>
+
+<span>Land / Plot</span>
+
+<span>Commercial</span>
+
+<span>Popular Areas</span>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+<div>
+
+
+<h3 className="font-bold mb-4">
+
+For Tenants
+
+</h3>
+
+
+<div className="space-y-3 text-sm flex flex-col">
+
+
+<Link href="/properties/rent">
+
+Rent A Home
+
+</Link>
+
+
+<span>PG / CO-Living</span>
+
+<span>Commercial</span>
+
+<span>Popular Areas</span>
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+}
+
+
+</div>
+
+
+
+
+
+
+
+
+<Link
+
+href="/contact"
+
+className={`${isScrolled?"text-black":"text-white"} font-medium`}
+
+>
+
+Contact Us
+
+</Link>
+
+
+
+
+<Link
+
+href="/dashboard"
+
+className={`${isScrolled?"text-black":"text-white"} font-medium`}
+
+>
+
+Dashboard
+
+</Link>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+{/* ACTIONS SAME */}
+
+<div className="xl:w-[25%] flex justify-around">
+
+
+
+<Link
+
+href="/add-property"
+
+className={`
+
+px-5 py-2
+
+rounded-full
+
+border
+
+transition-all
+
+
+${
+
+isScrolled
+
+?
+
+"border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white"
+
+:
+
+"border-white text-white hover:bg-white hover:text-blue-600"
+
+}
+
+`}
+
+>
+
+Add Property
+
+</Link>
+
+
+
+
+
+
+<Link
+
+href="/auth"
+
+className={`
+
+px-5 py-2
+
+rounded-full
+
+transition-all
+
+
+${
+
+isScrolled
+
+?
+
+"bg-blue-600 text-white hover:bg-white hover:text-blue-600"
+
+:
+
+"bg-white text-blue-600 hover:bg-transparent hover:text-white"
+
+}
+
+`}
+
+>
+
+Login
+
+</Link>
+
+
+
+</div>
+
+
+
+</header>
+
+
+
+
+
+
+
+
+{/* MOBILE / TABLET */}
+
+<div className="xl:hidden">
+
+<MobileNavbar/>
+
+</div>
+
+
+
+
+
+</>
+
+);
+
+
 }

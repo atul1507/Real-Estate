@@ -179,6 +179,8 @@ export default function Hero() {
                     className="
                     mt-10
 
+                    scroll-mt-20
+
                     bg-white
 
                     shadow-2xl
