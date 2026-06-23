@@ -1,0 +1,117 @@
+model User {
+
+id String @id @default(uuid())
+
+name String
+
+email String @unique
+
+password String
+
+
+role Role @default(USER)
+
+
+properties Property[]
+
+
+createdAt DateTime @default(now())
+
+}
+
+
+
+enum Role {
+
+USER
+
+OWNER
+
+AGENT
+
+ADMIN
+
+}
+
+
+model Property {
+
+id String @id @default(uuid())
+
+
+title String
+
+description String
+
+price Int
+
+
+city String
+
+address String
+
+
+bedrooms Int?
+
+bathrooms Int?
+
+area Int
+
+
+status PropertyStatus @default(PENDING)
+
+
+ownerId String
+
+
+owner User @relation(
+
+fields:[ownerId],
+
+references:[id]
+
+)
+
+
+images PropertyImage[]
+
+
+createdAt DateTime @default(now())
+
+}
+
+
+
+model PropertyImage{
+
+id String @id @default(uuid())
+
+
+url String
+
+
+propertyId String
+
+
+property Property @relation(
+
+fields:[propertyId],
+
+references:[id]
+
+)
+
+}
+
+
+enum PropertyStatus{
+
+PENDING
+
+APPROVED
+
+REJECTED
+
+SOLD
+
+}
