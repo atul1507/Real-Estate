@@ -118,3 +118,48 @@ html{
     scroll-behavior:smooth;
 
 }
+
+@keyframes fadeIn{
+
+    from{
+        opacity:0;
+        transform:translateY(10px);
+    }
+
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+
+}
+
+
+.animate-fadeIn{
+
+    animation:fadeIn 0.2s ease-out;
+
+}
+
+/* ORANGE AUTO HIDING SCROLLBAR */
+
+.custom-scroll {
+    scrollbar-color: #f97316 transparent;
+    scrollbar-width: thin;
+}
+
+
+.custom-scroll::-webkit-scrollbar {
+    height: 5px;
+}
+
+
+.custom-scroll::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+
+.custom-scroll::-webkit-scrollbar-thumb {
+    background-color: #f97316;
+    border-radius: 50px;
+}

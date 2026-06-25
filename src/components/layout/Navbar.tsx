@@ -36,17 +36,17 @@ import MobileNavbar from "./MobileNavbar";
 
 
 
-export default function Navbar(){
+export default function Navbar() {
 
 
 
-    const [showSearch,setShowSearch] = useState(false);
+    const [showSearch, setShowSearch] = useState(false);
 
-    const [isScrolled,setIsScrolled] = useState(false);
+    const [isScrolled, setIsScrolled] = useState(false);
 
-    const [isReady,setIsReady] = useState(false);
+    const [isReady, setIsReady] = useState(false);
 
-    const [buyOpen,setBuyOpen] = useState(false);
+    const [buyOpen, setBuyOpen] = useState(false);
 
 
 
@@ -65,10 +65,10 @@ export default function Navbar(){
 
     // SCROLL COLOR CHANGE
 
-    useEffect(()=>{
+    useEffect(() => {
 
 
-        const handleScroll = ()=>{
+        const handleScroll = () => {
 
 
             setIsScrolled(
@@ -92,13 +92,13 @@ export default function Navbar(){
 
             handleScroll,
 
-            {passive:true}
+            { passive: true }
 
         );
 
 
 
-        return()=>{
+        return () => {
 
             window.removeEventListener(
 
@@ -111,7 +111,7 @@ export default function Navbar(){
         };
 
 
-    },[]);
+    }, []);
 
 
 
@@ -127,18 +127,18 @@ export default function Navbar(){
     // HERO SEARCH OBSERVER SAME OLD LOGIC
 
 
-    useEffect(()=>{
+    useEffect(() => {
 
 
 
-        let observer:IntersectionObserver|null = null;
+        let observer: IntersectionObserver | null = null;
 
-        let checkSearchPosition:(()=>void)|null = null;
-
-
+        let checkSearchPosition: (() => void) | null = null;
 
 
-        if(pathname !== "/"){
+
+
+        if (pathname !== "/") {
 
 
             setShowSearch(false);
@@ -150,7 +150,7 @@ export default function Navbar(){
 
 
 
-        const timer = setTimeout(()=>{
+        const timer = setTimeout(() => {
 
 
 
@@ -165,7 +165,7 @@ export default function Navbar(){
 
 
 
-            if(!heroSearch){
+            if (!heroSearch) {
 
 
                 setShowSearch(false);
@@ -177,7 +177,7 @@ export default function Navbar(){
 
 
 
-            checkSearchPosition = ()=>{
+            checkSearchPosition = () => {
 
 
                 const rect =
@@ -204,13 +204,13 @@ export default function Navbar(){
 
 
 
-            setTimeout(()=>{
+            setTimeout(() => {
 
 
                 setIsReady(true);
 
 
-            },50);
+            }, 50);
 
 
 
@@ -219,7 +219,7 @@ export default function Navbar(){
             observer = new IntersectionObserver(
 
 
-                ()=>{
+                () => {
 
                     checkSearchPosition?.();
 
@@ -228,7 +228,7 @@ export default function Navbar(){
 
                 {
 
-                    threshold:[0,0.7,1]
+                    threshold: [0, 0.7, 1]
 
                 }
 
@@ -247,20 +247,20 @@ export default function Navbar(){
 
                 checkSearchPosition,
 
-                {passive:true}
+                { passive: true }
 
             );
 
 
 
 
-        },100);
+        }, 100);
 
 
 
 
 
-        return()=>{
+        return () => {
 
 
             clearTimeout(timer);
@@ -270,7 +270,7 @@ export default function Navbar(){
 
 
 
-            if(checkSearchPosition){
+            if (checkSearchPosition) {
 
 
                 window.removeEventListener(
@@ -289,7 +289,7 @@ export default function Navbar(){
 
 
 
-    },[pathname]);
+    }, [pathname]);
 
 
 
@@ -303,17 +303,17 @@ export default function Navbar(){
 
 
 
-return(
+    return (
 
-<>
+        <>
 
 
 
-{/* DESKTOP NAVBAR */}
+            {/* DESKTOP NAVBAR */}
 
-<header
+            <header
 
-className={`
+                className={`
 hidden xl:flex
 fixed top-0 left-0 right-0
 h-16
@@ -326,23 +326,21 @@ items-center
 transition-colors duration-300
 
 
-${
+${isScrolled
 
-isScrolled
+                        ?
 
-?
+                        "bg-white shadow-sm"
 
-"bg-white shadow-sm"
+                        :
 
-:
+                        "bg-transparent"
 
-"bg-transparent"
-
-}
+                    }
 
 `}
 
->
+            >
 
 
 
@@ -350,69 +348,63 @@ isScrolled
 
 
 
-{/* LOGO */}
+                {/* LOGO */}
 
-<div
+                <div
 
-className={`
+                    className={`
 overflow-hidden
 transition-all duration-500
 
 
-${
+${showSearch
 
-showSearch
+                            ?
 
-?
+                            "xl:w-[10%]"
 
-"xl:w-[10%]"
+                            :
 
-:
+                            "xl:w-[10%]"
 
-"xl:w-[10%]"
-
-}
+                        }
 
 `}
 
->
+                >
 
 
-<Link
+                    <Link
 
-href="/"
+                        href="/"
 
-className={`
+                        className={`
 
 text-xl
 font-bold
 
-${
+${isScrolled
 
-isScrolled
+                                ?
 
-?
+                                "text-black"
 
-"text-black"
+                                :
 
-:
+                                "text-white"
 
-"text-white"
-
-}
+                            }
 
 `}
 
->
+                    >
 
-DreamHome
+                        DreamHome
 
-</Link>
-
-
-</div>
+                    </Link>
 
 
+                </div>
 
 
 
@@ -420,42 +412,42 @@ DreamHome
 
 
 
-{/* SEARCH */}
 
-<div
 
-className={`
+                {/* SEARCH */}
+
+                <div
+
+                    className={`
 flex justify-center
 transition-all duration-500
 
 
-${
+${showSearch
 
-showSearch
+                            ?
 
-?
+                            "xl:w-[30%]"
 
-"xl:w-[30%]"
+                            :
 
-:
+                            "xl:w-[30%]"
 
-"xl:w-[30%]"
-
-}
+                        }
 
 `}
 
->
+                >
 
 
-{
+                    {
 
-!hideSearch &&
+                        !hideSearch &&
 
 
-<div
+                        <div
 
-className={`
+                            className={`
 flex items-center
 
 border
@@ -471,55 +463,53 @@ w-full max-w-105
 ${isReady && "transition-opacity duration-500"}
 
 
-${
+${showSearch
 
-showSearch
+                                    ?
 
-?
+                                    "opacity-100"
 
-"opacity-100"
+                                    :
 
-:
+                                    "opacity-0 pointer-events-none"
 
-"opacity-0 pointer-events-none"
-
-}
+                                }
 
 
 `}
 
->
+                        >
 
 
 
-<input
+                            <input
 
-placeholder="Search Location"
+                                placeholder="Search Location"
 
-className="flex-1 outline-none text-sm"
+                                className="flex-1 outline-none text-sm"
 
-/>
+                            />
 
 
 
-<Search
+                            <Search
 
-size={20}
+                                size={20}
 
-className="text-blue-600"
+                                className="text-blue-600"
 
-/>
+                            />
 
 
 
-</div>
+                        </div>
 
 
-}
+                    }
 
 
 
-</div>
+                </div>
 
 
 
@@ -530,27 +520,27 @@ className="text-blue-600"
 
 
 
-{/* NAVIGATION */}
+                {/* NAVIGATION */}
 
-<div
+                <div
 
-className="xl:w-[35%] flex items-center justify-around"
+                    className="xl:w-[35%] flex items-center justify-around"
 
->
+                >
 
 
 
-<Link
+                    <Link
 
-href="/"
+                        href="/"
 
-className={`${isScrolled?"text-black":"text-white"} font-medium`}
+                        className={`${isScrolled ? "text-black" : "text-white"} font-medium`}
 
->
+                    >
 
-Home
+                        Home
 
-</Link>
+                    </Link>
 
 
 
@@ -560,208 +550,268 @@ Home
 
 
 
-{/* BUY RENT MEGA MENU */}
+                    {/* BUY RENT MEGA MENU */}
 
-<div
+                    <div
 
-className="relative"
+                        className="relative"
 
-onMouseEnter={()=>setBuyOpen(true)}
+                        onMouseEnter={() => setBuyOpen(true)}
 
-onMouseLeave={()=>setBuyOpen(false)}
+                        onMouseLeave={() => setBuyOpen(false)}
 
->
+                    >
 
 
-<button
+                        <button
 
-className={`${isScrolled?"text-black":"text-white"} font-medium`}
+                            className={`${isScrolled ? "text-black" : "text-white"} font-medium`}
 
->
+                        >
 
-Buy/Rent
+                            Buy/Rent
 
-</button>
+                        </button>
 
 
 
 
 
-{
+                        {
 
-buyOpen &&
+                            buyOpen && (
 
 
-<div
+                                <div className="absolute top-full left-1/2 -translate-x-1/2 pt-5">
 
-className="
-absolute
 
-top-10
-left-1/2
--translate-x-1/2
 
-w-[520px]
+                                    <div className="w-[520px] bg-white rounded-2xl shadow-xl p-6 grid grid-cols-2 gap-8 text-black animate-fadeIn">
 
-bg-white
 
-rounded-2xl
 
-shadow-xl
 
-p-6
 
-grid grid-cols-2
 
-text-black
 
-"
+                                        {/* BUYERS */}
 
->
 
+                                        <div>
 
 
+                                            <h3 className="font-bold mb-4">
 
-<div>
+                                                For Buyers
 
+                                            </h3>
 
-<h3 className="font-bold mb-4">
 
-For Buyers
 
-</h3>
 
+                                            <div className="space-y-3 text-sm flex flex-col">
 
-<div className="space-y-3 text-sm flex flex-col">
 
+                                                <Link
 
-<Link href="/properties/buy">
+                                                    href="/properties/buy"
 
-Buy A Home
+                                                    className="hover:text-blue-600 transition"
 
-</Link>
+                                                >
 
-<span>Land / Plot</span>
+                                                    Buy A Home
 
-<span>Commercial</span>
+                                                </Link>
 
-<span>Popular Areas</span>
 
 
-</div>
+                                                <span className="hover:text-blue-600 cursor-pointer transition">
 
+                                                    Land / Plot
 
-</div>
+                                                </span>
 
 
 
+                                                <span className="hover:text-blue-600 cursor-pointer transition">
 
+                                                    Commercial
 
+                                                </span>
 
-<div>
 
 
-<h3 className="font-bold mb-4">
+                                                <span className="hover:text-blue-600 cursor-pointer transition">
 
-For Tenants
+                                                    Popular Areas
 
-</h3>
+                                                </span>
 
 
-<div className="space-y-3 text-sm flex flex-col">
 
+                                            </div>
 
-<Link href="/properties/rent">
 
-Rent A Home
 
-</Link>
+                                        </div>
 
 
-<span>PG / CO-Living</span>
 
-<span>Commercial</span>
 
-<span>Popular Areas</span>
 
 
 
-</div>
 
 
-</div>
+                                        {/* TENANTS */}
 
 
+                                        <div>
 
 
 
-</div>
+                                            <h3 className="font-bold mb-4">
 
+                                                For Tenants
 
-}
+                                            </h3>
 
 
-</div>
 
 
 
+                                            <div className="space-y-3 text-sm flex flex-col">
 
 
 
+                                                <Link
 
+                                                    href="/properties/rent"
 
-<Link
+                                                    className="hover:text-blue-600 transition"
 
-href="/contact"
+                                                >
 
-className={`${isScrolled?"text-black":"text-white"} font-medium`}
+                                                    Rent A Home
 
->
+                                                </Link>
 
-Contact Us
 
-</Link>
 
 
+                                                <span className="hover:text-blue-600 cursor-pointer transition">
 
+                                                    PG / CO-Living
 
-<Link
+                                                </span>
 
-href="/dashboard"
 
-className={`${isScrolled?"text-black":"text-white"} font-medium`}
 
->
 
-Dashboard
+                                                <span className="hover:text-blue-600 cursor-pointer transition">
 
-</Link>
+                                                    Commercial
 
+                                                </span>
 
 
-</div>
 
 
+                                                <span className="hover:text-blue-600 cursor-pointer transition">
 
+                                                    Popular Areas
 
+                                                </span>
 
 
 
 
+                                            </div>
 
 
 
-{/* ACTIONS SAME */}
 
-<div className="xl:w-[25%] flex justify-around">
+                                        </div>
 
 
 
-<Link
 
-href="/add-property"
 
-className={`
+
+                                    </div>
+
+
+
+                                </div>
+
+
+                            )
+
+                        }
+
+
+                    </div>
+
+
+
+
+
+
+
+
+                    <Link
+
+                        href="/contact"
+
+                        className={`${isScrolled ? "text-black" : "text-white"} font-medium`}
+
+                    >
+
+                        Contact Us
+
+                    </Link>
+
+
+
+
+                    <Link
+
+                        href="/dashboard"
+
+                        className={`${isScrolled ? "text-black" : "text-white"} font-medium`}
+
+                    >
+
+                        Dashboard
+
+                    </Link>
+
+
+
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+                {/* ACTIONS SAME */}
+
+                <div className="xl:w-[25%] flex justify-around">
+
+
+
+                    <Link
+
+                        href="/add-property"
+
+                        className={`
 
 px-5 py-2
 
@@ -772,38 +822,36 @@ border
 transition-all
 
 
-${
+${isScrolled
 
-isScrolled
+                                ?
 
-?
+                                "border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white"
 
-"border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white"
+                                :
 
-:
+                                "border-white text-white hover:bg-white hover:text-blue-600"
 
-"border-white text-white hover:bg-white hover:text-blue-600"
-
-}
+                            }
 
 `}
 
->
+                    >
 
-Add Property
+                        Add Property
 
-</Link>
-
-
+                    </Link>
 
 
 
 
-<Link
 
-href="/auth"
 
-className={`
+                    <Link
+
+                        href="/auth"
+
+                        className={`
 
 px-5 py-2
 
@@ -812,58 +860,56 @@ rounded-full
 transition-all
 
 
-${
+${isScrolled
 
-isScrolled
+                                ?
 
-?
+                                "bg-blue-600 text-white hover:bg-white hover:text-blue-600"
 
-"bg-blue-600 text-white hover:bg-white hover:text-blue-600"
+                                :
 
-:
+                                "bg-white text-blue-600 hover:bg-transparent hover:text-white"
 
-"bg-white text-blue-600 hover:bg-transparent hover:text-white"
-
-}
+                            }
 
 `}
 
->
+                    >
 
-Login
+                        Login
 
-</Link>
-
-
-
-</div>
+                    </Link>
 
 
 
-</header>
+                </div>
 
 
+
+            </header>
 
 
 
 
 
 
-{/* MOBILE / TABLET */}
-
-<div className="xl:hidden">
-
-<MobileNavbar/>
-
-</div>
 
 
+            {/* MOBILE / TABLET */}
+
+            <div className="xl:hidden">
+
+                <MobileNavbar />
+
+            </div>
 
 
 
-</>
 
-);
+
+        </>
+
+    );
 
 
 }

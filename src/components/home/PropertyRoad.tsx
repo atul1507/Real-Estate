@@ -1,5 +1,7 @@
 import AnimatedPropertyCard from "./AnimatedPropertyCard";
 
+import { properties } from "@/components/property/data/PropertyData";
+
 
 
 
@@ -7,10 +9,19 @@ import AnimatedPropertyCard from "./AnimatedPropertyCard";
 export default function PropertyRoad() {
 
 
+    const premiumProperties = properties.filter((property) => property.type === "buy" && property.premium);
 
-    const properties = Array.from({ length: 10 });
+
+    if (premiumProperties.length === 0) {
+
+        return null;
+
+    }
 
 
+    const desktopHeight = 350 + premiumProperties.length * 340;
+
+    const mobileHeight = 350 + premiumProperties.length * 520;
 
 
 
@@ -18,15 +29,18 @@ export default function PropertyRoad() {
 
 
         <section
-            className="
-    relative
 
-    min-h-[5600px]
-    lg:min-h-[3600px]
+            style={{
 
-    pb-72
+                "--mobile-height": `${mobileHeight}px`,
 
-    overflow-hidden"
+                "--desktop-height": `${desktopHeight}px`
+
+            } as React.CSSProperties}
+
+
+            className="relative min-h-[var(--mobile-height)] lg:min-h-[var(--desktop-height)] pb-20 overflow-hidden"
+
         >
 
 
@@ -37,73 +51,15 @@ export default function PropertyRoad() {
 
             {/* BOARD */}
 
-            <div
-                className="
-    absolute
 
-    top-0
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 md:left-[20%] md:-translate-x-[40%] lg:left-1/2 lg:-translate-x-1/2 w-[85%] md:w-[420px] lg:w-[520px] h-24 md:h-28 bg-white rounded-2xl shadow-xl flex items-center justify-center z-20">
 
 
-    /* MOBILE */
-    left-1/2
-    -translate-x-1/2
+                <h2 className="text-xl md:text-2xl font-bold">
 
 
-    /* TABLET */
-    md:left-[20%]
-    md:-translate-x-[40%]
+                    Premium Properties
 
-
-    /* DESKTOP */
-    lg:left-1/2
-    lg:-translate-x-1/2
-
-
-
-    w-[85%]
-
-    md:w-[420px]
-
-    lg:w-[520px]
-
-
-
-    h-24
-    md:h-28
-
-
-
-    bg-white
-
-
-    rounded-2xl
-
-
-    shadow-xl
-
-
-
-    flex
-    items-center
-    justify-center
-
-
-
-    z-20
-    "
-            >
-
-
-                <h2
-                    className="
-        text-xl
-        md:text-2xl
-
-        font-bold
-        "
-                >
-
-                    Featured Properties
 
                 </h2>
 
@@ -118,54 +74,15 @@ export default function PropertyRoad() {
 
 
 
+
             {/* ROAD */}
 
 
-            <div
-                className="
-                absolute
-
-                top-24
-                md:top-28
-
-                left-1/2
-                -translate-x-1/2
-
-
-                md:left-[20%]
-
-
-                lg:left-1/2
-
-
-                w-20
-                md:w-28
-                lg:w-36
-
-
-                bottom-0
-
-                bg-gray-900
-
-                overflow-hidden
-                "
-            >
+            <div style={{ height: "calc(100% - 100px)" }} className="absolute top-24 md:top-28 left-1/2 -translate-x-1/2 md:left-[20%] lg:left-1/2 w-20 md:w-28 lg:w-36 bg-gray-900 overflow-hidden">
 
 
 
-                <div
-                    className="
-                    absolute
-
-                    left-1/2
-                    -translate-x-1/2
-
-                    w-1
-                    h-full
-
-                    bg-[repeating-linear-gradient(to_bottom,#fff_0px,#fff_45px,transparent_45px,transparent_110px)]
-                    "
-                />
+                <div className="absolute left-1/2 -translate-x-1/2 w-1 h-full bg-[repeating-linear-gradient(to_bottom,#fff_0px,#fff_45px,transparent_45px,transparent_110px)]" />
 
 
 
@@ -179,15 +96,12 @@ export default function PropertyRoad() {
 
 
 
-
             {
-                properties.map((_, index) => {
+
+                premiumProperties.map((property, index) => {
 
 
                     const desktopLeft = index % 2 === 0;
-
-
-                    const mobileLeftAnimation = index % 2 === 0;
 
 
 
@@ -196,11 +110,10 @@ export default function PropertyRoad() {
                     return (
 
 
-
                         <div
 
 
-                            key={index}
+                            key={property.id}
 
 
                             style={{
@@ -210,44 +123,21 @@ export default function PropertyRoad() {
                             } as React.CSSProperties}
 
 
-
                             className={`
-                            
-                            absolute
-
-                            z-30
-
-
+                            absolute z-30
                             [--card-gap:520px]
-
                             lg:[--card-gap:320px]
-
-
 
                             left-1/2
                             -translate-x-1/2
 
-
-
                             md:left-[35%]
                             md:translate-x-0
 
-
-
-                            ${desktopLeft
-
-                                    ?
-
-                                    "lg:right-[62%] lg:left-auto"
-
-                                    :
-
-                                    "lg:left-[62%]"
-
-                                }
-
-
+                            ${desktopLeft ? "lg:right-[62%] lg:left-auto" : "lg:left-[62%]"}
                             `}
+
+
                         >
 
 
@@ -260,42 +150,21 @@ export default function PropertyRoad() {
 
 
                             <div
+
                                 className={`
-                                
-                                hidden
-                                md:block
-
-                                absolute
-
-                                top-1/2
-
+                                hidden md:block
+                                absolute top-1/2
                                 h-[2px]
-
                                 bg-gray-300
-
-
                                 md:w-28
                                 md:-left-28
-
-
-
                                 lg:w-40
 
-
-                                ${desktopLeft
-
-                                        ?
-
-                                        "lg:-right-40 lg:left-auto"
-
-                                        :
-
-                                        "lg:-left-40"
-
-                                    }
-
+                                ${desktopLeft ? "lg:-right-40 lg:left-auto" : "lg:-left-40"}
                                 `}
+
                             />
+
 
 
 
@@ -309,54 +178,26 @@ export default function PropertyRoad() {
 
 
                             <div
+
                                 className={`
-                                
-                                hidden
-                                md:block
-
-
-                                absolute
-
-                                top-1/2
+                                hidden md:block
+                                absolute top-1/2
                                 -translate-y-1/2
 
-
-                                w-4
-                                h-4
-
-
+                                w-4 h-4
                                 rounded-full
-
-
                                 bg-blue-600
-
-
                                 border-4
                                 border-white
-
-
                                 shadow-lg
-
-
 
                                 md:-left-[120px]
 
-
-
-                                ${desktopLeft
-
-                                        ?
-
-                                        "lg:-right-[168px] lg:left-auto"
-
-                                        :
-
-                                        "lg:-left-[168px]"
-
-                                    }
-
+                                ${desktopLeft ? "lg:-right-[168px] lg:left-auto" : "lg:-left-[168px]"}
                                 `}
+
                             />
+
 
 
 
@@ -369,38 +210,14 @@ export default function PropertyRoad() {
 
                             <AnimatedPropertyCard
 
+                                property={property}
 
-                                mobileDirection={
+                                mobileDirection={index % 2 === 0 ? "left" : "right"}
 
-                                    index % 2 === 0
-
-                                        ?
-
-                                        "left"
-
-                                        :
-
-                                        "right"
-
-                                }
-
-
-                                desktopDirection={
-
-                                    desktopLeft
-
-                                        ?
-
-                                        "left"
-
-                                        :
-
-                                        "right"
-
-                                }
-
+                                desktopDirection={desktopLeft ? "left" : "right"}
 
                             />
+
 
 
 
@@ -412,11 +229,11 @@ export default function PropertyRoad() {
                         </div>
 
 
-
                     )
 
 
                 })
+
             }
 
 

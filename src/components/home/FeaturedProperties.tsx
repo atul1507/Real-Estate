@@ -1,26 +1,40 @@
 import PropertyRoad from "./PropertyRoad";
 
+import { properties } from "@/components/property/data/PropertyData";
+
+
+
 
 
 export default function FeaturedProperties() {
 
 
+    const premiumProperties = properties.filter((property) => property.type === "buy" && property.premium);
+
+
+
+
+    if (premiumProperties.length === 0) {
+
+
+        return null;
+
+
+    }
+
+
+
+
+
+
+
     return (
 
 
-        <section
-            className="
-            overflow-hidden
+        <section className="overflow-hidden bg-gradient-to-b from-blue-200 via-sky-50 to-orange-200">
 
-            bg-gradient-to-b
 
-from-blue-200
 
-via-sky-50
-
-to-orange-200
-            "
-        >
 
 
 
@@ -28,55 +42,41 @@ to-orange-200
             {/* TOP TEXT */}
 
 
-            <div
-                className="
-                text-center
-
-                pt-32
-                pb-24
-
-                px-5
-                "
-            >
+            <div className="text-center pt-32 pb-24 px-5">
 
 
-                <h1
-                    className="
-                    text-5xl
-                    md:text-7xl
+                <h1 className="text-5xl md:text-7xl font-bold tracking-wide text-gray-900">
 
-                    font-bold
-
-                    tracking-wide
-
-                    text-gray-900
-                    "
-                >
 
                     Explore Premium Homes
+
 
                 </h1>
 
 
 
-                <p
-                    className="
-                    mt-8
 
-                    text-lg
-                    md:text-xl
 
-                    text-gray-600
-                    "
-                >
+
+                <p className="mt-8 text-lg md:text-xl text-gray-600">
+
 
                     Discover properties on your journey
+
 
                 </p>
 
 
 
+
+
+
             </div>
+
+
+
+
+
 
 
 
@@ -86,9 +86,14 @@ to-orange-200
 
 
 
+
+
+
+
         </section>
 
 
     )
+
 
 }

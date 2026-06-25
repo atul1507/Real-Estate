@@ -8,6 +8,8 @@ import WhyChooseUs from "@/components/home/WhyChooseUs";
 
 import CustomerStories from "@/components/home/CustomerStories";
 
+import RecommendedProperties from "@/components/home/recommended/RecommendedProperties";
+
 
 
 
@@ -26,6 +28,8 @@ export default function Home() {
 
 
             <FeaturedProperties />
+
+            <RecommendedProperties />
 
             <PropertyActions />
 

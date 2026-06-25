@@ -12,9 +12,11 @@ import { useEffect, useState } from "react";
 
 type Props = {
 
-    mobileDirection: "left" | "right";
+    property:any;
 
-    desktopDirection: "left" | "right";
+    mobileDirection:"left" | "right";
+
+    desktopDirection:"left" | "right";
 
 }
 
@@ -23,6 +25,8 @@ type Props = {
 
 
 export default function AnimatedPropertyCard({
+
+    property,
 
     mobileDirection,
 
@@ -249,7 +253,7 @@ export default function AnimatedPropertyCard({
                     "
                 >
 
-                    Modern Luxury Villa With Private Pool
+                    {property.title}
 
                 </h3>
 
@@ -270,7 +274,7 @@ export default function AnimatedPropertyCard({
                     "
                 >
 
-                    ₹85,00,000
+                    {property.price}
 
                 </h2>
 
@@ -291,8 +295,7 @@ export default function AnimatedPropertyCard({
                     "
                 >
 
-                    Beautiful 4BHK villa with private garden,
-                    premium interior and modern facilities.
+                    {property.description}
 
                 </p>
 
@@ -317,7 +320,7 @@ export default function AnimatedPropertyCard({
 
                         <Bed size={18} />
 
-                        4 Beds
+                        {property.bedroom} Beds
 
                     </span>
 
@@ -326,7 +329,7 @@ export default function AnimatedPropertyCard({
 
                         <Bath size={18} />
 
-                        3 Baths
+                        {property.bathroom} Baths
 
                     </span>
 
@@ -467,7 +470,7 @@ export default function AnimatedPropertyCard({
                     "
                 >
 
-                    Varanasi, India
+                    {property.location}
 
                 </p>
 

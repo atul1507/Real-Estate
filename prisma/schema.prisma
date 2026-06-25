@@ -1,117 +1,105 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+
+
+datasource db {
+
+  provider = "postgresql"
+
+}
+
 model User {
+  id String @id @default(uuid())
 
-id String @id @default(uuid())
+  name String
 
-name String
+  email String @unique
 
-email String @unique
+  password String
 
-password String
+  role Role @default(USER)
 
+  properties Property[]
 
-role Role @default(USER)
+  createdAt DateTime @default(now())
 
-
-properties Property[]
-
-
-createdAt DateTime @default(now())
-
+  updatedAt DateTime @updatedAt
 }
-
-
-
-enum Role {
-
-USER
-
-OWNER
-
-AGENT
-
-ADMIN
-
-}
-
 
 model Property {
+  id String @id @default(uuid())
 
-id String @id @default(uuid())
+  title String
 
+  description String
 
-title String
+  price Int
 
-description String
+  city String
 
-price Int
+  address String
 
+  propertyType PropertyType
 
-city String
+  category String
 
-address String
+  bedrooms Int?
 
+  bathrooms Int?
 
-bedrooms Int?
+  balcony Int?
 
-bathrooms Int?
+  area Int
 
-area Int
+  premium Boolean @default(false)
 
+  status PropertyStatus @default(PENDING)
 
-status PropertyStatus @default(PENDING)
+  ownerId String
 
+  owner User @relation(fields: [ownerId], references: [id])
 
-ownerId String
+  images PropertyImage[]
 
+  createdAt DateTime @default(now())
 
-owner User @relation(
-
-fields:[ownerId],
-
-references:[id]
-
-)
-
-
-images PropertyImage[]
-
-
-createdAt DateTime @default(now())
-
+  updatedAt DateTime @updatedAt
 }
 
+model PropertyImage {
+  id String @id @default(uuid())
 
+  url String
 
-model PropertyImage{
+  propertyId String
 
-id String @id @default(uuid())
-
-
-url String
-
-
-propertyId String
-
-
-property Property @relation(
-
-fields:[propertyId],
-
-references:[id]
-
-)
-
+  property Property @relation(fields: [propertyId], references: [id])
 }
 
+enum Role {
+  USER
 
-enum PropertyStatus{
+  OWNER
 
-PENDING
+  AGENT
 
-APPROVED
+  ADMIN
+}
 
-REJECTED
+enum PropertyType {
+  BUY
 
-SOLD
+  RENT
+}
 
+enum PropertyStatus {
+  PENDING
+
+  APPROVED
+
+  REJECTED
+
+  SOLD
 }
