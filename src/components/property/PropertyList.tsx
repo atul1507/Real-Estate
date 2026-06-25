@@ -61,7 +61,7 @@ export default function PropertyList({
 
         if (featuredOnly) {
 
-            return item.featured === true;
+            return item.approved === true;
 
         }
 
