@@ -7,7 +7,8 @@ import {
 
     Plus,
     User,
-    Search
+    Search,
+    LogOut
 
 } from "lucide-react";
 
@@ -29,6 +30,8 @@ import {
 
 import MobileNavbar from "./MobileNavbar";
 
+import { useAuth } from "@/context/AuthContext";
+
 
 
 
@@ -49,11 +52,12 @@ export default function Navbar() {
     const [buyOpen, setBuyOpen] = useState(false);
 
 
-
     const pathname = usePathname();
 
-
     const hideSearch = pathname !== "/";
+
+
+    const { user, logout, loading } = useAuth();
 
 
 
@@ -811,30 +815,7 @@ ${showSearch
 
                         href="/add-property"
 
-                        className={`
-
-px-5 py-2
-
-rounded-full
-
-border
-
-transition-all
-
-
-${isScrolled
-
-                                ?
-
-                                "border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white"
-
-                                :
-
-                                "border-white text-white hover:bg-white hover:text-blue-600"
-
-                            }
-
-`}
+                        className={`px-5 py-2 rounded-full border transition-all ${isScrolled ? "border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white" : "border-white text-white hover:bg-white hover:text-blue-600"}`}
 
                     >
 
@@ -847,38 +828,57 @@ ${isScrolled
 
 
 
-                    <Link
 
-                        href="/auth"
+                    {
 
-                        className={`
+                        loading
 
-px-5 py-2
+                            ?
 
-rounded-full
+                            <div
 
-transition-all
+                                className="w-24 h-10 rounded-full bg-gray-200 animate-pulse"
+
+                            />
 
 
-${isScrolled
+                            :
+
+
+                            user
 
                                 ?
 
-                                "bg-blue-600 text-white hover:bg-white hover:text-blue-600"
+                                <button
+
+                                    onClick={logout}
+
+                                    className="px-5 py-2 rounded-full bg-red-600 text-white hover:bg-red-700 transition-all"
+
+                                >
+
+                                    Logout
+
+                                </button>
+
 
                                 :
 
-                                "bg-white text-blue-600 hover:bg-transparent hover:text-white"
 
-                            }
+                                <Link
 
-`}
+                                    href="/auth"
 
-                    >
+                                    className={`px-5 py-2 rounded-full transition-all ${isScrolled ? "bg-blue-600 text-white hover:bg-white hover:text-blue-600" : "bg-white text-blue-600 hover:bg-transparent hover:text-white"}`}
 
-                        Login
+                                >
 
-                    </Link>
+                                    Login
+
+                                </Link>
+
+                    }
+
 
 
 

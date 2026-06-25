@@ -1,9 +1,18 @@
 import Navbar from "@/components/layout/Navbar";
+
 import Footer from "@/components/layout/Footer";
+
+import { AuthProvider } from "@/context/AuthContext";
 
 import type { Viewport } from "next";
 
 import "./globals.css";
+
+
+
+
+
+
 
 
 
@@ -23,6 +32,10 @@ export const viewport: Viewport = {
 
 
 
+
+
+
+
 export default function RootLayout({
 
     children,
@@ -34,68 +47,120 @@ export default function RootLayout({
 }) {
 
 
+
+
+
     return (
 
+
+
+
+
         <html lang="en">
+
+
+
 
 
             <body>
 
 
-                <div
-
-                    className="
-
-min-h-screen
-
-flex
-
-flex-col
-
-"
-
-                >
 
 
-                    <Navbar />
+
+                <AuthProvider>
 
 
 
 
-                    <main
 
-                        className="
+                    <div
 
-flex-1
-
-"
+                        className="min-h-screen flex flex-col"
 
                     >
 
 
-                        {children}
-
-
-                    </main>
 
 
 
+                        <Navbar />
 
 
-                    <Footer />
 
 
 
-                </div>
+
+
+
+
+
+                        <main
+
+                            className="flex-1"
+
+                        >
+
+
+
+
+
+                            {children}
+
+
+
+
+
+                        </main>
+
+
+
+
+
+
+
+
+
+
+                        <Footer />
+
+
+
+
+
+
+
+
+
+
+                    </div>
+
+
+
+
+
+                </AuthProvider>
+
+
 
 
 
             </body>
 
 
+
+
+
         </html>
 
+
+
+
+
     );
+
+
+
 
 
 }

@@ -21,6 +21,11 @@ import {
 } from "lucide-react";
 
 
+import { useRouter } from "next/navigation";
+
+import { useAuth } from "@/context/AuthContext";
+
+
 
 
 
@@ -29,6 +34,103 @@ export default function AuthPage() {
 
     const [login, setLogin] = useState(true);
     const [showPassword, setShowPassword] = useState(false);
+
+    const router = useRouter();
+
+
+    const {
+
+        login: loginUser,
+
+        register
+
+    } = useAuth();
+
+
+
+
+
+    const [name, setName] = useState("");
+
+    const [email, setEmail] = useState("");
+
+    const [password, setPassword] = useState("");
+
+    const [error, setError] = useState("");
+
+
+
+    async function handleSubmit() {
+
+
+        setError("");
+
+
+
+        let success = false;
+
+
+
+
+
+        if (login) {
+
+
+            success = await loginUser(
+
+                email,
+
+                password
+
+            );
+
+
+        }
+
+
+        else {
+
+
+            success = await register(
+
+                name,
+
+                email,
+
+                password
+
+            );
+
+
+        }
+
+
+
+
+
+        if (success) {
+
+
+            router.replace("/");
+
+
+        }
+
+
+        else {
+
+
+            setError(
+
+                "Authentication failed"
+
+            );
+
+
+        }
+
+
+    }
 
 
 
@@ -422,33 +524,24 @@ ${login
                         </p>
 
 
-
-
-
-
-
-
-
                         <div className="space-y-5">
-
 
 
                             {
 
                                 !login &&
 
-
                                 <input
 
+                                    value={name}
+
+                                    onChange={(e) => setName(e.target.value)}
 
                                     placeholder="Full Name"
 
-
                                     className={login ? "loginInput" : "signupInput"}
 
-
                                 />
-
 
                             }
 
@@ -456,42 +549,40 @@ ${login
 
 
 
+
+
                             <input
 
+                                value={email}
+
+                                onChange={(e) => setEmail(e.target.value)}
 
                                 placeholder="Email Address"
 
-
                                 className={login ? "loginInput" : "signupInput"}
-
 
                             />
 
 
 
 
-                            <div
 
-                                className="
 
-relative
 
-"
-
-                            >
+                            <div className="relative">
 
 
                                 <input
 
+                                    value={password}
+
+                                    onChange={(e) => setPassword(e.target.value)}
 
                                     placeholder="Password"
 
-
                                     type={showPassword ? "text" : "password"}
 
-
                                     className={login ? "loginInput pr-12" : "signupInput pr-12"}
-
 
                                 />
 
@@ -501,40 +592,11 @@ relative
 
                                 <button
 
-
                                     type="button"
-
 
                                     onClick={() => setShowPassword(!showPassword)}
 
-
-                                    className={`
-
-absolute
-
-right-5
-
-top-1/2
-
--translate-y-1/2
-
-
-cursor-pointer
-
-
-${login
-
-                                            ?
-
-                                            "text-white"
-
-                                            :
-
-                                            "text-black"
-
-                                        }
-
-`}
+                                    className={`absolute right-5 top-1/2 -translate-y-1/2 cursor-pointer ${login ? "text-white" : "text-black"}`}
 
                                 >
 
@@ -551,7 +613,6 @@ ${login
 
                                             <Eye size={20} />
 
-
                                     }
 
 
@@ -559,46 +620,50 @@ ${login
 
 
 
-
                             </div>
+
+
+
+
+
+
+
 
                             {
 
+                                error &&
+
+
+                                <p className="text-center text-sm text-red-500">
+
+
+                                    {error}
+
+
+                                </p>
+
+                            }
+
+
+
+
+
+
+
+
+                            {
 
                                 login &&
 
 
-                                <div
-
-                                    className="
-
-flex
-
-justify-end
-
-"
-
-                                >
+                                <div className="flex justify-end">
 
 
                                     <button
 
+                                        type="button"
 
-                                        className="
-
-text-sm
-
-text-white/90
-
-hover:text-white
-
-hover:underline
-
-transition
-
-cursor-pointer
-
-"
+                                        className="text-sm text-white/90 hover:text-white hover:underline transition cursor-pointer"
 
                                     >
 
@@ -609,11 +674,11 @@ cursor-pointer
                                     </button>
 
 
-
                                 </div>
 
 
                             }
+
 
 
 
@@ -630,44 +695,9 @@ cursor-pointer
 
                         <button
 
+                            onClick={handleSubmit}
 
-                            className={`
-
-
-mt-8
-
-w-full
-
-h-14
-
-
-rounded-full
-
-
-font-bold
-
-
-transition
-
-
-cursor-pointer
-
-
-
-${login
-
-                                    ?
-
-                                    "bg-white text-blue-600 hover:bg-black hover:text-white"
-
-                                    :
-
-                                    "bg-black text-white hover:bg-white hover:text-black"
-
-
-                                }
-
-`}
+                            className={`mt-8 w-full h-14 rounded-full font-bold transition cursor-pointer ${login ? "bg-white text-blue-600 hover:bg-black hover:text-white" : "bg-black text-white hover:bg-white hover:text-black"}`}
 
                         >
 
@@ -688,12 +718,6 @@ ${login
 
 
                         </button>
-
-
-
-
-
-
 
 
                         <p
