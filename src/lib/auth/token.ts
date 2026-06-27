@@ -1,25 +1,6 @@
 import jwt from "jsonwebtoken";
 
-
-
-
-
-type TokenPayload = {
-
-
-    id:string;
-
-
-    email:string;
-
-
-    role:string;
-
-
-}
-
-
-
+import { TokenPayload } from "@/types/auth.types";
 
 
 
@@ -27,36 +8,25 @@ type TokenPayload = {
 
 export function createToken(
 
-    payload:TokenPayload
+    payload: TokenPayload
 
-){
+) {
 
-
-
-    const token = jwt.sign(
+    return jwt.sign(
 
         payload,
 
-
         process.env.JWT_SECRET!,
-
 
         {
 
-            expiresIn:"7d"
+            expiresIn: "7d"
 
         }
 
     );
 
-
-
-    return token;
-
-
 }
-
-
 
 
 
@@ -66,41 +36,16 @@ export function createToken(
 
 export function verifyToken(
 
-    token:string
+    token: string
 
-){
+): TokenPayload {
 
+    return jwt.verify(
 
+        token,
 
-    try{
+        process.env.JWT_SECRET!
 
-
-        const decoded = jwt.verify(
-
-            token,
-
-
-            process.env.JWT_SECRET!
-
-        ) as TokenPayload;
-
-
-
-        return decoded;
-
-
-
-    }
-
-
-    catch(error){
-
-
-        return null;
-
-
-    }
-
-
+    ) as TokenPayload;
 
 }

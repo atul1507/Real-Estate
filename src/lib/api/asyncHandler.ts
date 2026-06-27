@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-
-import { ApiError } from "../api/ApiError";
+import { ApiError } from "./ApiError";
 
 
 
@@ -9,11 +8,11 @@ import { ApiError } from "../api/ApiError";
 
 type Handler = (
 
-    request:NextRequest
+    request: NextRequest,
 
-)=>Promise<NextResponse>;
+    context?: any
 
-
+) => Promise<NextResponse>;
 
 
 
@@ -21,35 +20,31 @@ type Handler = (
 
 export function asyncHandler(
 
-    handler:Handler
+    handler: Handler
 
-){
+) {
 
+    return async function (
 
+        request: NextRequest,
 
-    return async function(
+        context?: any
 
-        request:NextRequest
+    ) {
 
-    ){
-
-
-        try{
-
+        try {
 
             return await handler(
 
-                request
+                request,
+
+                context
 
             );
 
-
         }
 
-
-        catch(error:any){
-
-
+        catch (error: any) {
 
             console.log("API ERROR:", error);
 
@@ -57,34 +52,27 @@ export function asyncHandler(
 
 
 
-            if(error instanceof ApiError){
-
+            if (error instanceof ApiError) {
 
                 return NextResponse.json(
 
                     {
 
-                        success:false,
+                        success: false,
 
-
-                        message:error.message
+                        message: error.message
 
                     },
 
-
                     {
 
-                        status:error.statusCode
+                        status: error.statusCode
 
                     }
 
                 );
 
-
             }
-
-
-
 
 
 
@@ -94,29 +82,22 @@ export function asyncHandler(
 
                 {
 
-                    success:false,
+                    success: false,
 
-
-                    message:"Internal server error"
+                    message: "Internal server error"
 
                 },
 
-
                 {
 
-                    status:500
+                    status: 500
 
                 }
 
             );
 
-
-
         }
 
-
-
-    }
-
+    };
 
 }
